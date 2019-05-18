@@ -28,8 +28,8 @@
 					data-toggle="dropdown" role="button" aria-haspopup="true"
 					aria-expanded="false">접속하기<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li class="active"><a href="login.jsp">로그인</a></li>
-						<li><a href="join.jsp">회원가입</a></li>
+						<li><a href="login.jsp">로그인</a></li>
+						<li class="active"><a href="join.jsp">회원가입</a></li>
 					</ul></li>
 			</ul>
 		</div>
@@ -39,7 +39,7 @@
 		<div class="col-lg-4"></div>
 		<div class="col-lg-4">
 			<div class="jumbotron" style="padding-top: 20px">
-				<form method="post" action="joinAction.jsp">
+				<form method="post" action="joinAction.jsp"> <!-- 이쪽으로 데이터를 보낸다. -->
 					<h3 style="text-align: center;">회원가입 화면</h3>
 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="아이디" name="userID" maxlength="20">
