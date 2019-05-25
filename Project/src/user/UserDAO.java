@@ -1,6 +1,6 @@
 package user;
 
-//DAO = 'µ¥ÀÌÅÍº£ÀÌ½º Á¢±Ù °´Ã¼'ÀÇ ¾àÀÚ. ½ÇÁúÀûÀ¸·Î µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ È¸¿øÁ¤º¸¸¦ ºÒ·¯¿À°Å³ª µ¥ÀÌÅÍº£ÀÌ½º¿¡ È¸¿ø Á¤º¸¸¦ ³ÖÀ» ¶§ »ç¿ëÇÑ´Ù. 
+//DAO = 'ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼'ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½Å³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,9 +12,9 @@ public class UserDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 
-	public UserDAO() { //µ¥ÀÌÅÍº£ÀÌ½º¿¡ Á¢±ÙÇØ¼­ Á¤º¸¸¦ °¡Á®¿À°Å³ª ³Ö´Â ¿ªÇÒ
+	public UserDAO() { //ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å³ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½
 		try {
-			String dbURL = "jdbc:mysql://localhost:3306/BBS";
+			String dbURL = "jdbc:mysql://localhost:3306/BBS?serverTimezone=UTC";
 			String dbID = "root";
 			String dbPassword = "9866";
 			Class.forName("com.mysql.jdbc.Driver");
@@ -32,19 +32,19 @@ public class UserDAO {
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				if (rs.getString(1).equals(userPassword))
-					return 1; // ·Î±×ÀÎ ¼º°ø
+					return 1; // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				else
-					return 0; // ºñ¹Ð¹øÈ£ ºÒÀÏÄ¡
+					return 0; // ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½Ä¡
 			}
-			return -1; // ¾ÆÀÌµð°¡ ¾øÀ½
+			return -1; // ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return -2; // µ¥ÀÌÅÍº£ÀÌ½º ¿À·ù
+		return -2; // ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	}
 
 	public int join(User user) {
-		String SQL = "INSERT INTO USER VALUES (?, ?, ?, ?, ?)"; //INSERT¹®Àº 0ÀÌ»óÀÇ ¼ýÀÚ¸¦ ¹ÝÈ¯
+		String SQL = "INSERT INTO USER VALUES (?, ?, ?, ?, ?)"; //INSERTï¿½ï¿½ï¿½ï¿½ 0ï¿½Ì»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½È¯
 		try {
 			pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1,  user.getUserID());
@@ -52,11 +52,11 @@ public class UserDAO {
 			pstmt.setString(3,  user.getUserName());
 			pstmt.setString(4,  user.getUserGender());
 			pstmt.setString(5,  user.getUserEmail());
-			return pstmt.executeUpdate(); //½ÇÇà °á°ú¸¦ DB¿¡ ³Ö´Â´Ù.
+			return pstmt.executeUpdate(); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½Ö´Â´ï¿½.
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return -1; //µ¥ÀÌÅÍº£ÀÌ½º ¿À·ù (-1ÀÌ ¾Æ´Ñ °æ¿ì ¼º°ø)
+		return -1; //ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ (-1ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
 	}
 	
 }

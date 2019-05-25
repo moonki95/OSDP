@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="bbs.BbsDAO"%>
+<%@ page import="bbs.Bbs"%>
 <%@ page import="java.io.PrintWriter"%>
 <%	request.setCharacterEncoding("UTF-8"); %>
-<jsp:useBean id="bbs" class="bbs.Bbs" scope="page" />
-<jsp:setProperty name="bbs" property="bbsTitle" />
-<jsp:setProperty name="bbs" property="bbsContent" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,8 +24,32 @@
 			script.println("location.href = 'login.jsp'");
 			script.println("</script>");
 		}
+		
+		
+		int bbsID = 0; //글의 번호가 들어오지 않았다면
+		if (request.getParameter("bbsID") != null) { //특정한 번호가 존재해야 글을 볼 수 있음.
+			bbsID = Integer.parseInt(request.getParameter("bbsID"));
+		}
+		if (bbsID == 0) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('유효하지 않은 글입니다.')");
+			script.println("location.href = 'bbs.jsp'");
+			script.println("</script>");
+		}
+		Bbs bbs = new BbsDAO().getBbs(bbsID);
+		if (!userID.equals(bbs.getUserID())) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('권한이 없습니다.')");
+			script.println("location.href = 'bbs.jsp'");
+			script.println("</script>");
+		}
+		
+		
 		else {
-			if (bbs.getBbsTitle() == null || bbs.getBbsContent() == null) {
+			if (request.getParameter("bbsTitle") == null || request.getParameter("bbsContent") == null
+					|| request.getParameter("bbsTitle").equals("") || request.getParameter("bbsContent").equals("")) {
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
 				script.println("alert('입력이 안 된 사항이 있습니다.')");
@@ -34,15 +57,15 @@
 				script.println("</script>");
 			} else {
 				BbsDAO bbsDAO = new BbsDAO();
-				int result = bbsDAO.write(bbs.getBbsTitle(), userID, bbs.getBbsContent()); //DB에 등록
+				int result = bbsDAO.update(bbsID, request.getParameter("bbsTitle"), request.getParameter("bbsContent")); //DB에 등록
 
 				if (result == -1) { //DB오류
 					PrintWriter script = response.getWriter();
 					script.println("<script>");
-					script.println("alert('글작성에 실패했습니다.')");
+					script.println("alert('글 수정에 실패했습니다.')");
 					script.println("history.back()"); //DB에 등록되지 않고, 전 페이지로 돌아감
 					script.println("</script>");
-				} else { //글 작성 성공
+				} else { //글 수정 성공
 					PrintWriter script = response.getWriter();
 					script.println("<script>");
 					script.println("location.href = 'bbs.jsp'"); //게시판 메인화면으로 이동
