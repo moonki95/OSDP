@@ -68,7 +68,7 @@
 		<!-- '홈페이지 소개'시 사용하는 부트스트랩 -->
 		<div class="container">
 			<h1>아빠트</h1>
-			<p>이 웹사이트는 개신아파트 관리를 위해 만들었습니다. 주민들의 편리를 위하여 항상 신경쓰겠습니다.</p>
+			<p>이 웹사이트는 개신아파트 관리를 위해 만들었습니다. 주민들의 편의를 위하여 항상 신경쓰겠습니다.<br><br>- 관리사무소장 올림 -</p>
 			<p>
 				<a class="btn btn-primary btn-pull" href="#" role="button">043-123-4567</a>
 			</p>
@@ -94,9 +94,9 @@
 					<img src="images/3.jpg">
 				</div>
 			</div>
-			<a class="left arousel-control" href="#myCarousel" data-slide="prev">
+			<a class="left carousel-control" href="#myCarousel" data-slide="prev">
 				<span class="glyphicon glyphicon-chevron-left"></span>
-			</a> <a class="right arousel-control" href="#myCarousel"
+			</a> <a class="right carousel-control" href="#myCarousel"
 				data-slide="next"> <span
 				class="glyphicon glyphicon-chevron-right"></span>
 			</a>

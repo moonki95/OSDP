@@ -45,7 +45,7 @@
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="main.jsp">메인</a></li>
-				<li class="active"><a href="bbs.jsp">게시판</a></li>
+				<li class="active"><a href="bbs.jsp">자유 게시판</a></li>
 				<!-- active : 현재의 페이지를 알려줌 -->
 			</ul>
 			<%
