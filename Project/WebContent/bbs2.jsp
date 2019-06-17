@@ -1,8 +1,9 @@
+<!-- [게시판-2] 민원 게시판 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter"%>
-<%@ page import="bbs.BbsDAO"%>
-<%@ page import="bbs.Bbs"%>
+<%@ page import="bbs2.Bbs2DAO"%>
+<%@ page import="bbs2.Bbs2"%>
 <%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
@@ -18,32 +19,22 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<title>경비In</title>
-<!-- 20190614 홈페이지 이름 수정 -->
-
-<style>
+<title>경비In 웹 사이트</title>
+<style type="text/css">
 a, a:hover {
 	color: #000000;
 	text-decoration: none;
 }
 </style>
 </head>
-<body id="myPage" data-spy="scroll" data-target=".navbar"
-	data-offset="50">
-
-	<!-- 로그인이 된 사람들의 세션을 만들어 준다. 
-
-		 회원값이 있는 사람들은 userID에 정보가 담기게 되고
-
-		 아닌 사람은 null값을 가지게 된다.
-
-	-->
+<body>
 	<%
 		String userID = null;
 		if (session.getAttribute("userID") != null) {
-			userID = (String) session.getAttribute("userID");
+			userID = (String) session.getAttribute("userID"); //로그인시, userID에 해당 아이디가 입력됨.
 		}
-		int pageNumber = 1;
+		/*2019-05-21*/
+		int pageNumber = 1; //기본 페이지를 의미함
 		if (request.getParameter("pageNumber") != null) {
 			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		}
@@ -137,114 +128,87 @@ a, a:hover {
 %>
 	<div class="container">
 		<div class="row">
-			<p>공지게시판</p>
+			<p>자유게시판</p>
 			<table class="table table-striped"
-				style="text-align: center; border: 1px;">
+				style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
-						<th style="background-color: #eeeeee; text-align: center;">번호</th>
-						<th style="background-color: #eeeeee; text-align: center;">제목</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성일</th>
+						<th style="background-color: #eeeeee; text-align: center">번호</th>
+						<th style="background-color: #eeeeee; text-align: center">제목</th>
+						<th style="background-color: #eeeeee; text-align: center">작성자</th>
+						<th style="background-color: #eeeeee; text-align: center">작성일</th>
 						<th style="background-color: #eeeeee; text-align: center;">조회수</th>
 					</tr>
 				</thead>
 				<tbody>
 					<%
-						BbsDAO bbsDAO = new BbsDAO();
-						ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
-						ArrayList<Bbs> listAll = bbsDAO.getAllList();
-						int result; //2019-06-08 [BEST]인기글		
+						Bbs2DAO bbs2DAO = new Bbs2DAO();
+						ArrayList<Bbs2> list = bbs2DAO.getList(pageNumber);
+						ArrayList<Bbs2> listAll = bbs2DAO.getAllList();
+						int result; //2019-06-08 [BEST]인기글	
 						int OrderNum = 1;
 						int k = listAll.size() - ((pageNumber - 1) * 10) + 1;
 						for (int i = 0; i < list.size(); i++) {
-							// 2019-06-15 [투표] 생성_BEGIN_박초희
-							//if(list.get(i).getBbsVOTE()==1){
-							//	result = bbsDAO.best(list.get(i).getBbsID(), "[투표] "+list.get(i).getBbsTitle());
-							//}
-							//2019-06-15 [투표] 생성_END_박초희
-					%>
-					<tr>
-						<%
-							if (list.get(i).getBbsVOTE() == 1) {
-						%>
-						<td><%=k - OrderNum%></td>
-						<%
-							if (list.get(i).getBbsView() >= 15) {
-						%>
-						<td><a
-							href="voteview.jsp?bbsID=<%=list.get(i).getBbsID()%>&modNum=<%=0%>#<%=0%>">[BEST]
-								<%=list.get(i).getBbsTitle().replaceAll(" ", "&nbsp").replaceAll("<", "&lt")
-								.replaceAll(">", "&gt").replaceAll("\n", "<br>")%></a></td>
-						<%
-							} else {
-						%>
-						<td><a
-							href="voteview.jsp?bbsID=<%=list.get(i).getBbsID()%>&modNum=<%=0%>#<%=0%>"><%=list.get(i).getBbsTitle().replaceAll(" ", "&nbsp").replaceAll("<", "&lt")
-								.replaceAll(">", "&gt").replaceAll("\n", "<br>")%></a></td>
-						<%
-							}
-						%>
-						<td><%=list.get(i).getUserID()%></td>
-						<td><%=list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13)
-							+ "시" + list.get(i).getBbsDate().substring(14, 16) + "분"%></td>
-						<td><%=list.get(i).getBbsView()%></td>
-					</tr>
-					<%
-						} else {
 					%>
 					<tr>
 						<td><%=k - OrderNum%></td>
 						<%
-							if (list.get(i).getBbsView() >= 15) {
+							if(list.get(i).getBbsView() >= 15)
+							{
 						%>
 						<td><a
-							href="view.jsp?bbsID=<%=list.get(i).getBbsID()%>&modNum=<%=0%>#<%=0%>">[BEST]
-								<%=list.get(i).getBbsTitle().replaceAll(" ", "&nbsp").replaceAll("<", "&lt")
-								.replaceAll(">", "&gt").replaceAll("\n", "<br>")%></a></td>
+							href="view2.jsp?bbsID=<%=list.get(i).getBbsID()%>&modNum=<%=0%>#<%=0%>">[BEST] <%=list.get(i).getBbsTitle().replaceAll(" ", "&nbsp").replaceAll("<", "&lt")
+						.replaceAll(">", "&gt").replaceAll("\n", "<br>")%></a></td>
 						<%
-							} else {
+							}
+							else{
 						%>
 						<td><a
-							href="view.jsp?bbsID=<%=list.get(i).getBbsID()%>&modNum=<%=0%>#<%=0%>"><%=list.get(i).getBbsTitle().replaceAll(" ", "&nbsp").replaceAll("<", "&lt")
-								.replaceAll(">", "&gt").replaceAll("\n", "<br>")%></a></td>
+							href="view2.jsp?bbsID=<%=list.get(i).getBbsID()%>&modNum=<%=0%>#<%=0%>"><%=list.get(i).getBbsTitle().replaceAll(" ", "&nbsp").replaceAll("<", "&lt")
+						.replaceAll(">", "&gt").replaceAll("\n", "<br>")%></a></td>
 						<%
 							}
 						%>
 						<td><%=list.get(i).getUserID()%></td>
-						<td><%=list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13)
-							+ "시" + list.get(i).getBbsDate().substring(14, 16) + "분"%></td>
+						<td><%=list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13) + "시"
+						+ list.get(i).getBbsDate().substring(14, 16) + "분"%></td>
 						<td><%=list.get(i).getBbsView()%></td>
 					</tr>
 					<%
-						}
-							OrderNum++;
+						OrderNum++;
 						}
 					%>
-
 				</tbody>
 			</table>
+			<!-- 페이지를 보여주는 하단 부분 -->
 			<%
 				if (pageNumber != 1) {
 			%>
-			<a href="bbs.jsp?pageNumber=<%=pageNumber - 1%>"
-				class="btn btn-success btn-arraw-left">이전</a>
+			<a href="bbs2.jsp?pageNumber=<%=pageNumber - 1%>"
+				class="btn btn-success btn-arrow-left">이전</a>
 			<%
 				}
-			System.out.print(k-OrderNum);
+				if (bbs2DAO.nextPage(pageNumber + 1)&& k-OrderNum != 0) { //다음 페이지가 존재한다면
+			%>
 
-				if (bbsDAO.nextPage(pageNumber + 1) && k-OrderNum != 0) {
-			%>
-			<a href="bbs.jsp?pageNumber=<%=pageNumber + 1%>"
-				class="btn btn-success btn-arraw-left">다음</a>
+			<a href="bbs2.jsp?pageNumber=<%=pageNumber + 1%>"
+				class="btn btn-success btn-arrow-left">다음</a>
 			<%
 				}
 			%>
-			<a href="votewrite.jsp" class="btn btn-primary pull-right">글쓰기</a>
+			<a href="write2.jsp" class="btn btn-primary pull-right">글 작성</a>
 		</div>
 	</div>
+
+	<!--  시도#1
+	<script src="https://code.jquery.com/jqurey-3.1.1.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	-->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<!-- 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>﻿
+	 -->
 </body>
 </html>
